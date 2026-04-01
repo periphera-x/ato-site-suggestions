@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Team Overseas — Full Site Preview (Pivot)</title>
+  <style>
+    /* === ATO Design System === */
+    :root {
+      --primary: #059673;
+      --primary-dark: #048060;
+      --primary-light: #d1fae8;
+      --primary-lighter: #f0fdf8;
+      --text-dark: #0C0E12;
+      --text-secondary: #717680;
+      --text-muted: #949AA3;
+      --bg-white: #ffffff;
+      --bg-off: #f8fafb;
+      --bg-dark: #0C0E12;
+      --bg-dark-soft: #161921;
+      --border-dark: #222932;
+      --border-light: #e5e7eb;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text-dark);
+      background: var(--bg-white);
+      line-height: 1.6;
+      font-size: 17px;
+    }
+
+    /* ===== NAV ===== */
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 0 1rem;
+    }
+    .site-nav .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .site-nav .logo {
+      font-weight: 700; font-size: 1.1rem; color: var(--text-dark);
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+    }
+    .site-nav .logo span { color: var(--primary); }
+    .nav-links { display: flex; gap: 1.75rem; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-secondary); font-size: 0.9rem;
+      font-weight: 500; transition: color 0.2s; cursor: pointer;
+    }
+    .nav-links a:hover { color: var(--text-dark); }
+    .nav-links a.active { color: var(--primary); font-weight: 600; }
+    .nav-cta {
+      background: var(--primary) !important; color: white !important;
+      padding: 8px 20px !important; border-radius: 6px !important;
+      font-weight: 600 !important; font-size: 0.85rem !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--primary-dark) !important; }
+
+    /* ===== PAGE TABS (for preview switching) ===== */
+    .page-tabs {
+      background: #f8f9fa; border-bottom: 1px solid var(--border-light);
+      padding: 0 1rem;
+    }
+    .page-tabs .tabs-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; gap: 0; overflow-x: auto;
+    }
+    .page-tab {
+      padding: 12px 20px; cursor: pointer;
+      font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
+      white-space: nowrap; transition: all 0.2s;
+      background: none; border-top: none; border-left: none; border-right: none;
+    }
+    .page-tab:hover { color: var(--text-dark); background: #f0f1f3; }
+    .page-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+
+    /* ===== LAYOUT ===== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .container-narrow { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+
+    /* ===== DRAFT BANNER ===== */
+    .draft-banner {
+      background: #fffbeb; border: 1px solid #fbbf24; border-radius: 8px;
+      padding: 14px 20px; margin: 20px auto; max-width: 1200px;
+      font-size: 0.85rem; color: #92400e;
+    }
+    .draft-banner strong { color: #78350f; }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 5rem 0 3.5rem; text-align: center;
+    }
+    .hero h1 {
+      font-size: 3rem; font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.08; margin-bottom: 1.25rem; max-width: 780px;
+      margin-left: auto; margin-right: auto;
+    }
+    .hero .subtitle {
+      font-size: 1.15rem; color: var(--text-secondary); max-width: 600px;
+      margin: 0 auto 2rem; line-height: 1.55;
+    }
+    .hero-bullets {
+      display: flex; gap: 2rem; justify-content: center; margin-bottom: 2.5rem;
+      flex-wrap: wrap; list-style: none;
+    }
+    .hero-bullets li {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.95rem; color: var(--text-secondary); font-weight: 500;
+    }
+    .hero-bullets li .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-primary {
+      display: inline-block; background: var(--primary); color: white;
+      padding: 13px 28px; border-radius: 6px; font-weight: 600;
+      font-size: 0.95rem; text-decoration: none; transition: background 0.2s;
+      border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-outline {
+      display: inline-block; border: 1.5px solid var(--border-light); color: var(--text-dark);
+      padding: 12px 28px; border-radius: 6px; font-weight: 600;
+      font-size: 0.95rem; text-decoration: none; transition: all 0.2s; background: white;
+      cursor: pointer;
+    }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-full { width: 100%; text-align: center; }
+
+    /* ===== SECTIONS ===== */
+    .section { padding: 5rem 0; }
+    .section-alt { background: var(--bg-off); }
+    .section-dark { background: var(--bg-dark); color: white; }
+    .section-dark h2 { color: white; }
+    .section-dark p { color: #b0b5bf; }
+    .section-dark .check { color: #34d399; }
+    .section h2 {
+      font-size: 2.25rem; font-weight: 800; letter-spacing: -0.02em;
+      margin-bottom: 0.75rem; line-height: 1.15;
+    }
+    .section h3 {
+      font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;
+    }
+    .section p {
+      color: var(--text-secondary); line-height: 1.7; margin-bottom: 0.85rem;
+      font-size: 1rem;
+    }
+    .section-label {
+      font-size: 0.8rem; font-weight: 700; color: var(--primary);
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;
+    }
+    .text-center { text-align: center; }
+
+    /* ===== VALUE PROP CARDS (3-up) ===== */
+    .value-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+      margin: 2.5rem 0;
+    }
+    .value-card {
+      padding: 2rem; border: 1px solid var(--border-light); border-radius: 12px;
+      background: white; transition: box-shadow 0.2s;
+    }
+    .value-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .value-card .vc-icon {
+      width: 48px; height: 48px; border-radius: 10px; background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem; font-size: 1.3rem;
+    }
+    .value-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .value-card p { font-size: 0.9rem; margin-bottom: 0; }
+
+    /* ===== SOCIAL PROOF STRIP ===== */
+    .proof-strip {
+      padding: 2.5rem 0; border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      text-align: center;
+    }
+    .proof-strip p {
+      font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem;
+    }
+    .proof-logos {
+      display: flex; gap: 3rem; justify-content: center; align-items: center;
+      flex-wrap: wrap; opacity: 0.5;
+    }
+    .proof-logos span {
+      font-size: 1rem; font-weight: 700; color: var(--text-secondary);
+      letter-spacing: 0.02em;
+    }
+
+    /* ===== HOW IT WORKS (Steps) ===== */
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem;
+      margin: 2.5rem 0; counter-reset: step;
+    }
+    .step-card { position: relative; padding-top: 0.5rem; }
+    .step-card::before {
+      counter-increment: step;
+      content: counter(step);
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--primary); color: white;
+      font-weight: 700; font-size: 1rem; margin-bottom: 1rem;
+    }
+    .step-card h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+    .step-card p { font-size: 0.9rem; margin-bottom: 0; }
+
+    /* ===== FEATURE ROW (two-col) ===== */
+    .feature-row {
+      display: flex; gap: 4rem; align-items: center;
+      padding: 2rem 0;
+    }
+    .feature-row.reverse { flex-direction: row-reverse; }
+    .feature-text { flex: 1; }
+    .feature-visual {
+      flex: 1; background: var(--primary-light); border-radius: 12px;
+      min-height: 260px; display: flex; align-items: center; justify-content: center;
+      color: var(--primary); font-weight: 600; font-size: 0.85rem;
+      padding: 2rem;
+    }
+
+    /* ===== COMPARISON TABLE ===== */
+    .compare-table {
+      width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;
+    }
+    .compare-table th {
+      text-align: left; padding: 14px 16px; font-weight: 600;
+      border-bottom: 2px solid var(--border-light);
+    }
+    .compare-table th:first-child { background: transparent; }
+    .compare-table th.highlight { background: var(--primary-light); color: var(--primary); border-radius: 8px 8px 0 0; }
+    .compare-table td { padding: 12px 16px; border-bottom: 1px solid var(--border-light); }
+    .compare-table td.highlight { background: var(--primary-lighter); }
+    .check { color: var(--primary); font-weight: 700; }
+    .cross { color: #d1d5db; }
+
+    /* Dark variant */
+    .section-dark .compare-table th { border-bottom-color: var(--border-dark); }
+    .section-dark .compare-table th.highlight { background: rgba(5,150,115,0.15); color: #34d399; }
+    .section-dark .compare-table td { border-bottom-color: var(--border-dark); color: #b0b5bf; }
+    .section-dark .compare-table td:first-child { color: #e0e0e0; }
+    .section-dark .compare-table td.highlight { background: rgba(5,150,115,0.08); }
+
+    /* ===== PRICING ===== */
+    .pricing-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+      margin: 2rem 0;
+    }
+    .pricing-card {
+      border: 1.5px solid var(--border-light); border-radius: 12px;
+      padding: 2.5rem; position: relative; background: white;
+    }
+    .pricing-card.featured {
+      border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary);
+    }
+    .pricing-card .badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--primary); color: white; font-size: 0.72rem;
+      font-weight: 700; padding: 4px 16px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .pricing-card .price {
+      font-size: 2.5rem; font-weight: 800; margin: 0.5rem 0;
+    }
+    .pricing-card .price span { font-size: 1rem; font-weight: 400; color: var(--text-secondary); }
+    .pricing-card .desc {
+      color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;
+    }
+    .pricing-card ul { list-style: none; margin-bottom: 2rem; }
+    .pricing-card ul li {
+      padding: 7px 0; font-size: 0.9rem; display: flex; align-items: flex-start; gap: 10px;
+    }
+    .pricing-card ul li::before {
+      content: '\2713'; color: var(--primary); font-weight: 700; flex-shrink: 0;
+    }
+
+    /* Tier table */
+    .tier-table {
+      width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;
+    }
+    .tier-table th {
+      text-align: left; padding: 12px 16px; background: var(--bg-off);
+      font-weight: 600; border-bottom: 2px solid var(--border-light);
+    }
+    .tier-table td {
+      padding: 12px 16px; border-bottom: 1px solid var(--border-light);
+      color: var(--text-secondary);
+    }
+    .tier-table td:first-child { font-weight: 500; color: var(--text-dark); }
+
+    /* Total investment highlight */
+    .total-box {
+      background: var(--primary-lighter); border: 1.5px solid var(--primary-light);
+      border-radius: 10px; padding: 1.5rem 2rem; text-align: center; margin: 2rem 0;
+    }
+    .total-box .total-label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .total-box .total-amount { font-size: 2rem; font-weight: 800; color: var(--primary); margin: 0.25rem 0; }
+    .total-box .total-note { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* Included grid */
+    .included-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .included-card {
+      padding: 1.75rem; border: 1px solid var(--border-light); border-radius: 10px;
+      background: white;
+    }
+    .included-card h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+    .included-card p { font-size: 0.88rem; margin-bottom: 0; }
+
+    /* Add-ons */
+    .addon-row {
+      display: flex; gap: 1.5rem; margin: 1.5rem 0;
+    }
+    .addon-card {
+      flex: 1; padding: 1.5rem; border: 1px dashed var(--border-light); border-radius: 10px;
+    }
+    .addon-card .addon-price { font-weight: 700; color: var(--primary); margin-bottom: 0.25rem; font-size: 1rem; }
+
+    /* Value props row */
+    .value-row {
+      display: flex; gap: 2rem; justify-content: center; margin: 2.5rem 0; flex-wrap: wrap;
+    }
+    .value-row-item { text-align: center; }
+    .value-row-item strong { display: block; font-size: 1rem; margin-bottom: 2px; }
+    .value-row-item span { color: var(--text-muted); font-size: 0.85rem; }
+
+    /* ===== FAQ ===== */
+    .faq-list { max-width: 800px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--border-light); }
+    .faq-q {
+      width: 100%; text-align: left; background: none; border: none;
+      padding: 1.25rem 0; font-size: 1rem; font-weight: 600;
+      cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+      color: var(--text-dark); font-family: inherit;
+    }
+    .faq-q::after { content: '+'; font-size: 1.4rem; color: var(--text-muted); transition: transform 0.2s; }
+    .faq-q.open::after { content: '\2212'; }
+    .faq-a {
+      display: none; padding: 0 0 1.25rem; color: var(--text-secondary);
+      font-size: 0.92rem; line-height: 1.7;
+    }
+    .faq-a.open { display: block; }
+
+    /* ===== FOUNDER NOTE ===== */
+    .founder-note {
+      max-width: 680px; margin: 0 auto; text-align: center;
+    }
+    .founder-note .sig {
+      margin-top: 1.5rem; font-weight: 600; color: var(--text-dark);
+    }
+    .founder-note .sig span { display: block; font-weight: 400; color: var(--text-secondary); font-size: 0.85rem; }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+      text-align: center; padding: 5rem 0;
+      background: linear-gradient(180deg, var(--primary-lighter) 0%, white 100%);
+    }
+    .cta-section h2 { margin-bottom: 0.75rem; }
+    .cta-section p { max-width: 520px; margin: 0 auto 2rem; }
+
+    /* ===== TESTIMONIAL CARD ===== */
+    .testimonials-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .testimonial-card {
+      padding: 1.75rem; border: 1px solid var(--border-light); border-radius: 10px;
+      background: white;
+    }
+    .testimonial-card .tc-text {
+      font-size: 0.9rem; color: var(--text-secondary); font-style: italic;
+      line-height: 1.6; margin-bottom: 1rem;
+    }
+    .testimonial-card .tc-name { font-weight: 600; font-size: 0.9rem; }
+    .testimonial-card .tc-role { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* ===== ROLES GRID ===== */
+    .roles-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+      margin: 2.5rem 0;
+    }
+    .role-card {
+      border: 1px solid var(--border-light); border-radius: 12px;
+      padding: 2rem; background: white; transition: box-shadow 0.2s;
+    }
+    .role-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .role-card .role-icon {
+      width: 48px; height: 48px; border-radius: 10px; background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem; font-size: 1.3rem;
+    }
+    .role-card h3 { margin-bottom: 0.75rem; }
+    .role-card ul { list-style: none; margin: 0; }
+    .role-card ul li {
+      padding: 4px 0; font-size: 0.88rem; color: var(--text-secondary);
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .role-card ul li::before { content: '\2713'; color: var(--primary); font-weight: 700; font-size: 0.8rem; }
+    .ai-badge {
+      display: inline-block; background: var(--primary-light); color: var(--primary);
+      font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+
+    /* ===== PROCESS STEPS (vertical timeline) ===== */
+    .process-timeline {
+      max-width: 700px; margin: 2.5rem auto; position: relative;
+      padding-left: 3rem;
+    }
+    .process-timeline::before {
+      content: ''; position: absolute; left: 19px; top: 0; bottom: 0;
+      width: 2px; background: var(--primary-light);
+    }
+    .pt-step {
+      position: relative; margin-bottom: 2.5rem;
+    }
+    .pt-step:last-child { margin-bottom: 0; }
+    .pt-step .pt-num {
+      position: absolute; left: -3rem; top: 0;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem; z-index: 1;
+    }
+    .pt-step h3 { font-size: 1.1rem; margin-bottom: 0.35rem; }
+    .pt-step p { font-size: 0.9rem; margin-bottom: 0; }
+
+    /* ===== CONTACT FORM ===== */
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+      align-items: start; margin: 2rem 0;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); }
+    .form-group input, .form-group textarea, .form-group select {
+      padding: 10px 14px; border: 1.5px solid var(--border-light); border-radius: 8px;
+      font-size: 0.9rem; font-family: inherit; color: var(--text-dark);
+      transition: border-color 0.2s; background: white;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      outline: none; border-color: var(--primary);
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .expect-list { list-style: none; margin: 1.5rem 0; }
+    .expect-list li {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 1rem 0; border-bottom: 1px solid var(--border-light);
+    }
+    .expect-list li:last-child { border-bottom: none; }
+    .expect-num {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--primary-light);
+      color: var(--primary); display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+    }
+    .expect-text strong { display: block; font-size: 0.95rem; margin-bottom: 2px; }
+    .expect-text span { font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* ===== BLOG PLACEHOLDER ===== */
+    .blog-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+      margin: 2rem 0;
+    }
+    .blog-card {
+      border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;
+      background: white; transition: box-shadow 0.2s;
+    }
+    .blog-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .blog-card .bc-img {
+      height: 160px; background: var(--bg-off);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 0.8rem;
+    }
+    .blog-card .bc-body { padding: 1.25rem; }
+    .blog-card .bc-tag {
+      font-size: 0.72rem; font-weight: 700; color: var(--primary);
+      text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.4rem;
+    }
+    .blog-card h3 { font-size: 1rem; margin-bottom: 0.4rem; line-height: 1.3; }
+    .blog-card p { font-size: 0.82rem; margin-bottom: 0; }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      background: var(--bg-dark); color: #b0b5bf; padding: 3.5rem 0 2rem;
+      font-size: 0.82rem;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem;
+    }
+    .footer-col h4 {
+      color: white; font-size: 0.78rem; margin-bottom: 0.75rem;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .footer-col a { color: #8a8f9a; text-decoration: none; display: block; padding: 3px 0; transition: color 0.2s; }
+    .footer-col a:hover { color: white; }
+    .footer-bottom {
+      max-width: 1200px; margin: 2rem auto 0; padding: 1.5rem 1.5rem 0;
+      border-top: 1px solid var(--border-dark); color: #555; font-size: 0.78rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .hero .subtitle { font-size: 1rem; }
+      .feature-row, .feature-row.reverse { flex-direction: column; gap: 2rem; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .included-grid { grid-template-columns: 1fr; }
+      .addon-row { flex-direction: column; }
+      .hero-bullets { flex-direction: column; align-items: center; gap: 0.75rem; }
+      .value-cards { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .roles-grid { grid-template-columns: 1fr; }
+      .testimonials-row { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .compare-table { font-size: 0.78rem; }
+      .compare-table th, .compare-table td { padding: 8px 10px; }
+      .nav-links { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="#" class="logo" onclick="showPage('homepage'); return false;">A Team <span>Overseas</span></a>
+    <div class="nav-links">
+      <a onclick="showPage('homepage')" class="active" id="nav-homepage">Home</a>
+      <a onclick="showPage('whyus')" id="nav-whyus">Why Us</a>
+      <a onclick="showPage('services')" id="nav-services">Services</a>
+      <a onclick="showPage('pricing')" id="nav-pricing">Pricing</a>
+      <a onclick="showPage('blog')" id="nav-blog">Blog</a>
+      <a onclick="showPage('contact')" id="nav-contact">Contact</a>
+      <a onclick="showPage('contact')" class="nav-cta">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== PAGE TABS (Preview navigation) ===== -->
+<div class="page-tabs">
+  <div class="tabs-inner">
+    <button class="page-tab active" data-page="homepage">Homepage</button>
+    <button class="page-tab" data-page="whyus">Why Us</button>
+    <button class="page-tab" data-page="services">Services</button>
+    <button class="page-tab" data-page="pricing">Pricing</button>
+    <button class="page-tab" data-page="contact">Contact</button>
+    <button class="page-tab" data-page="blog">Blog</button>
+  </div>
+</div>
+
+
+<!-- ================================================================ -->
+<!-- ==================== HOMEPAGE ================================== -->
+<!-- ================================================================ -->
+<div id="homepage" class="page-section active">
+
+  <div class="container">
+    <div class="draft-banner">
+      <strong>DRAFT — Full site preview with pivot changes applied.</strong> All pages included. Sections marked [Visual placeholder] need images/graphics from the team.
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Hire top, AI-ready Filipino talent directly.</h1>
+      <p class="subtitle">We handle recruiting, AI training, and ongoing support. One flat membership. No hidden margins.</p>
+      <ul class="hero-bullets">
+        <li><span class="dot"></span> Direct hire. Your team, your payroll</li>
+        <li><span class="dot"></span> AI-ready from day one</li>
+        <li><span class="dot"></span> $500/mo membership</li>
+      </ul>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Get started</a>
+        <a href="#" class="btn-outline" onclick="showPage('contact'); return false;">Book an intro call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Value Prop Cards (3-up — UX improvement: replaces long feature sections on homepage) -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label">Why founders choose ATO</p>
+        <h2>Direct hire with agency support</h2>
+        <p style="max-width: 560px; margin: 0 auto 1rem;">The control of a direct hire. The infrastructure of a managed service. The AI training nobody else offers.</p>
+      </div>
+      <div class="value-cards">
+        <div class="value-card">
+          <div class="vc-icon">🤖</div>
+          <h3>AI-ready from day one</h3>
+          <p>Every assistant completes our AI foundations program before they start.</p>
+        </div>
+        <div class="value-card">
+          <div class="vc-icon">📈</div>
+          <h3>Proactivity is the standard</h3>
+          <p>We measure every assistant against our Contributor Growth Curve. Our goal is Level 4+ for every placement, with ongoing coaching to get there.</p>
+        </div>
+        <div class="value-card">
+          <div class="vc-icon">💰</div>
+          <h3>Transparent pricing</h3>
+          <p>$500/mo to ATO for recruiting, training, and support. $1,200–2,000/mo paid directly to your assistant at market rate. No hidden margins. See where every dollar goes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof Strip -->
+  <div class="proof-strip">
+    <div class="container">
+      <p>Talent trusted by fast-moving startups and agencies</p>
+      <div class="proof-logos">
+        <span>[Client Logo]</span>
+        <span>[Client Logo]</span>
+        <span>[Client Logo]</span>
+        <span>[Client Logo]</span>
+        <span>[Client Logo]</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works (UX improvement: clear 3-step funnel) -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label">How it works</p>
+        <h2>A simple process for busy founders</h2>
+        <p style="max-width: 520px; margin: 0 auto;">We despise having to jump through hoops. Our process was built to prioritize realized value over perceived value.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <h3>Tell us what you need</h3>
+          <p>Quick intro call + a 5-minute preference form. We build a "User Manual" so your future assistant knows exactly how to work with you.</p>
+        </div>
+        <div class="step-card">
+          <h3>Meet your candidates</h3>
+          <p>We vet and propose 2–4 candidates with resumes, highlights, and video intros. You run 30-minute screening calls and pick your favorite.</p>
+        </div>
+        <div class="step-card">
+          <h3>Kickoff and grow</h3>
+          <p>Your assistant starts AI-trained and onboarded. We check in weekly for the first month, bi-monthly after that, then as-needed. Always available if you need us.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Table (Dark section — UX improvement: visual contrast) -->
+  <section class="section section-dark">
+    <div class="container-narrow">
+      <div class="text-center">
+        <p class="section-label" style="color: #34d399;">How ATO compares</p>
+        <h2>The best of both worlds</h2>
+        <p style="max-width: 480px; margin: 0 auto 2rem;">The control of a direct hire. The infrastructure of a managed service.</p>
+      </div>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Direct Hire /<br>Headhunter</th>
+            <th>Managed<br>Service</th>
+            <th class="highlight">ATO<br>Membership</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Client pays EA directly</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="cross">&#10007;</span></td>
+            <td class="highlight"><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Ongoing support included</td>
+            <td><span class="cross">&#10007;</span></td>
+            <td><span class="check">&#10003;</span></td>
+            <td class="highlight"><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>AI training included</td>
+            <td><span class="cross">&#10007;</span></td>
+            <td>Varies</td>
+            <td class="highlight"><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Continuing education</td>
+            <td><span class="cross">&#10007;</span></td>
+            <td>Varies</td>
+            <td class="highlight"><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Predictable monthly cost</td>
+            <td><span class="cross">&#10007;</span></td>
+            <td><span class="check">&#10003;</span></td>
+            <td class="highlight"><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Client retains direct control</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="cross">&#10007;</span></td>
+            <td class="highlight"><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>Talent paid market rate</td>
+            <td><span class="check">&#10003;</span></td>
+            <td>Often not</td>
+            <td class="highlight"><span class="check">&#10003;</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Testimonials (consolidated per UX rec) -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label">What our clients say</p>
+        <h2>Real results from real founders</h2>
+      </div>
+      <div class="testimonials-row">
+        <div class="testimonial-card">
+          <p class="tc-text">"[Testimonial from existing ATO client — replace with real quote]"</p>
+          <div class="tc-name">[Client Name]</div>
+          <div class="tc-role">[Title, Company]</div>
+        </div>
+        <div class="testimonial-card">
+          <p class="tc-text">"[Testimonial from existing ATO client — replace with real quote]"</p>
+          <div class="tc-name">[Client Name]</div>
+          <div class="tc-role">[Title, Company]</div>
+        </div>
+        <div class="testimonial-card">
+          <p class="tc-text">"[Testimonial from existing ATO client — replace with real quote]"</p>
+          <div class="tc-name">[Client Name]</div>
+          <div class="tc-role">[Title, Company]</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Start reclaiming your time for things that truly matter</h2>
+      <p>Hire a remote assistant with us. Your first month is a paid trial with no annual commitment.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Get started</a>
+        <a href="#" class="btn-outline" onclick="showPage('contact'); return false;">Book an intro call</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- ==================== WHY US PAGE =============================== -->
+<!-- ================================================================ -->
+<div id="whyus" class="page-section">
+
+  <section class="hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <p class="section-label">Why A Team Overseas</p>
+      <h1>We're here to shift the standards of this industry</h1>
+      <p class="subtitle">We're committed to helping our assistants keep up with current standards. We're building something better.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Get started</a>
+        <a href="#" class="btn-outline" onclick="showPage('contact'); return false;">Book an intro call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Training (Core differentiator — NEW) -->
+  <section class="section">
+    <div class="container">
+      <div class="feature-row">
+        <div class="feature-text">
+          <p class="section-label">Core differentiator</p>
+          <h2>AI-native training that most agencies can't offer</h2>
+          <p><strong>Before placement:</strong> Every assistant completes our structured AI training program: 5 sessions covering the AI landscape, prompting skills, tool fluency across multiple platforms, and applying AI to real work tasks.</p>
+          <p><strong>After placement:</strong> Ongoing coaching during check-ins, group learning sessions, and new tools and workflows as they emerge. We set up their Cowork environment and install workflow-specific skills.</p>
+          <p>As long as the membership is active, we're offering more avenues for your assistant to grow.</p>
+        </div>
+        <div class="feature-visual">[AI Training Program Visual — e.g. screenshot of training modules or Cowork setup]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Transparent Economics (REWRITTEN) -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="feature-row reverse">
+        <div class="feature-text">
+          <p class="section-label">Transparent pricing</p>
+          <h2>Your assistant gets paid what they're worth</h2>
+          <p>Most agencies charge $2,500–3,000/mo and pay assistants $700–800. You never see the split.</p>
+          <p>With ATO: <strong>$500/mo goes to ATO</strong> for recruiting, training, and support. <strong>$1,200–2,000/mo goes directly to your assistant</strong> at market rate. Every dollar accounted for.</p>
+          <p>Your total investment ($1,700–2,300/mo) is comparable to what other agencies may charge except your assistant earns significantly more. Higher pay means better candidates, better retention, and a stronger partnership.</p>
+        </div>
+        <div class="feature-visual">[Pricing comparison visual — $500 ATO / $1,200–2,000 EA split diagram]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Talent Quality (ENHANCED) -->
+  <section class="section">
+    <div class="container">
+      <div class="feature-row">
+        <div class="feature-text">
+          <p class="section-label">Talent quality</p>
+          <h2>Proactive, high-quality talent</h2>
+          <p>Every candidate goes through a multi-stage vetting process: initial interview, tiered assessment task, and final interview. By the time we propose someone, we're already confident.</p>
+          <p>We measure every assistant against our <strong>Contributor Growth Curve</strong>. Our goal is Level 4+ for every placement.</p>
+          <p>With AI training on top of that, your assistant is ahead of the curve.</p>
+        </div>
+        <div class="feature-visual">[Contributor Growth Curve Levels 1-5 visual]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder-Led (KEPT) -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="feature-row reverse">
+        <div class="feature-text">
+          <p class="section-label">Personal support</p>
+          <h2>No noise. Just people. Direct access.</h2>
+          <p>You work directly with our leadership team. We're a small, tight-knit group and we stay involved long after the placement.</p>
+          <p><strong>Month 1:</strong> Weekly check-ins.<br><strong>Months 2–3:</strong> Bi-monthly.<br><strong>After 90 days:</strong> As-needed.<br>Prefer async? No problem, we run the same cadence over your preferred platform.</p>
+        </div>
+        <div class="feature-visual">[Team / support visual]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ethical & Mission-Driven -->
+  <section class="section">
+    <div class="container">
+      <div class="feature-row">
+        <div class="feature-text">
+          <p class="section-label">Mission-driven</p>
+          <h2>A win-win-win: for clients, talent, and the industry</h2>
+          <p>ATO exists to prove that you can build a great business that works for everyone. Our assistants are paid above market rate, treated with respect, and supported with real career development.</p>
+          <p>The direct-hire model means your assistant works for you, not an agency. They get the stability of a real job, the pay they deserve, and the coaching infrastructure to keep getting better.</p>
+        </div>
+        <div class="feature-visual">[Kevin's video embed / mission statement visual]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder Note -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="founder-note">
+        <h2>A note from the founder</h2>
+        <p style="margin-top: 1rem;">I started A Team Overseas because I thought clients and Filipino assistants deserved better. That hasn't changed. What has changed is how we deliver on that promise, with AI training, transparent pricing, and a model that puts more money in our assistants' pockets while giving you more control. We're here to prove you can build a great business that's a win-win-win.</p>
+        <div class="sig">
+          Kevin Galang
+          <span>CEO, Founder @ A Team Overseas</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Start reclaiming your time for things that truly matter</h2>
+      <p>Hire a remote assistant with us. Your first month is a paid trial with no annual commitment.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Get started</a>
+        <a href="#" class="btn-outline" onclick="showPage('contact'); return false;">Book an intro call</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- ==================== SERVICES PAGE ============================= -->
+<!-- ================================================================ -->
+<div id="services" class="page-section">
+
+  <section class="hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <p class="section-label">Our services</p>
+      <h1>Learn more about our service and process</h1>
+      <p class="subtitle">Hire proactive, highly qualified virtual assistants with a flat membership fee and full onboarding support. Every placement arrives AI-ready.</p>
+    </div>
+  </section>
+
+  <!-- Roles -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label">Roles we specialize in</p>
+        <h2>The roles we recruit and onboard for</h2>
+        <p style="max-width: 520px; margin: 0 auto;">Each role includes AI training, structured onboarding, and ongoing coaching as part of your membership.</p>
+      </div>
+      <div class="roles-grid">
+        <div class="role-card">
+          <div class="role-icon">📋</div>
+          <span class="ai-badge">AI-trained</span>
+          <h3>Executive Assistant</h3>
+          <ul>
+            <li>Calendar and email management</li>
+            <li>Travel planning and coordination</li>
+            <li>Meeting prep and follow-ups</li>
+            <li>Research and information gathering</li>
+            <li>Personal task management</li>
+            <li>AI-assisted email triage and drafting</li>
+          </ul>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">⚙️</div>
+          <span class="ai-badge">AI-trained</span>
+          <h3>Operations Assistant</h3>
+          <ul>
+            <li>Process documentation and SOPs</li>
+            <li>Project coordination and tracking</li>
+            <li>Data entry and management</li>
+            <li>Vendor and client communication</li>
+            <li>Systems setup and optimization</li>
+            <li>AI-powered workflow automation</li>
+          </ul>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">📣</div>
+          <span class="ai-badge">AI-trained</span>
+          <h3>Marketing Assistant</h3>
+          <ul>
+            <li>Social media management</li>
+            <li>Content creation and scheduling</li>
+            <li>Email marketing campaigns</li>
+            <li>Basic graphic design tasks</li>
+            <li>Marketing analytics tracking</li>
+            <li>AI-assisted content and copy drafting</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What Membership Includes -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label">Beyond the person</p>
+        <h2>What your membership includes</h2>
+        <p style="max-width: 560px; margin: 0 auto;"></p>
+      </div>
+      <div class="included-grid">
+        <div class="included-card">
+          <h3>🔍 Recruiting & Placement</h3>
+          <p>Full sourcing, vetting, and candidate shortlisting, with up to 3 hires per year. Resumes, video intros, and ATO's notes on each candidate. Plus 1 free replacement if a hire doesn't work out.</p>
+        </div>
+        <div class="included-card">
+          <h3>🤖 AI Training & Tooling</h3>
+          <p>5-session AI foundations program before Day 1: the AI landscape, prompting skills, tool fluency, and real-task application. After placement: ongoing upskilling, new tools, Claude Cowork setup, and workflow-specific skills.</p>
+        </div>
+        <div class="included-card">
+          <h3>📚 Continuing Education</h3>
+          <p>Regular group training sessions driven by what clients actually need. Access to ATO's internal knowledge base and resources. New tools and workflows as they emerge.</p>
+        </div>
+        <div class="included-card">
+          <h3>🤝 Coaching & Performance</h3>
+          <p>Structured check ins and continuous coaching during placement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process (UX improvement: visible timeline instead of hidden toggle) -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label">Our process</p>
+        <h2>A simple process for busy clients</h2>
+        <p style="max-width: 540px; margin: 0 auto;">We despise having to jump through hoops. Our process was built to prioritize realized value over perceived value.</p>
+      </div>
+      <div class="process-timeline">
+        <div class="pt-step">
+          <div class="pt-num">1</div>
+          <h3>Leading with understanding</h3>
+          <p>After our intro call, you'll complete a quick 5–10 minute form on your work style, preferences, and priorities. We use these insights to craft a personalized "User Manual" that helps your future assistant understand exactly how to work best with you.</p>
+        </div>
+        <div class="pt-step">
+          <div class="pt-num">2</div>
+          <h3>Finding your ideal candidate</h3>
+          <p>We tap into our network, vet candidates, and propose 2–4 people who fit your criteria. You'll get their resumes, key highlights, and pre-negotiated rates. Run a 30-minute screening call to confirm the fit. Pick your favorite or give feedback and we'll find more.</p>
+        </div>
+        <div class="pt-step">
+          <div class="pt-num">3</div>
+          <h3>Kickoff call & start</h3>
+          <p>On your assistant's first day, we host a 30-minute kickoff call to confirm roles, responsibilities, and next steps. Your assistant arrives already AI-trained through our foundations program. After that, you're off and running.</p>
+        </div>
+        <div class="pt-step">
+          <div class="pt-num">4</div>
+          <h3>Ongoing support for 90+ days</h3>
+          <p>Weekly check-ins for the first 4 weeks. Bi-monthly for months 2–3. After 90 days: as-needed. Async option always available. AI training and coaching continue for the life of the membership.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Start reclaiming your time for things that truly matter</h2>
+      <p>Hire a remote assistant with us. Your first month is a paid trial with no annual commitment.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Get started</a>
+        <a href="#" class="btn-outline" onclick="showPage('contact'); return false;">Book an intro call</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- ==================== PRICING PAGE ============================== -->
+<!-- ================================================================ -->
+<div id="pricing" class="page-section">
+
+  <section class="hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <p class="section-label">Pricing</p>
+      <h1>Simple, transparent pricing</h1>
+      <p class="subtitle">See exactly what goes to ATO and what goes directly to your assistant. No hidden fees, no surprises.</p>
+    </div>
+  </section>
+
+  <!-- Pricing Cards -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="pricing-grid">
+
+        <!-- ATO Membership -->
+        <div class="pricing-card featured">
+          <div class="badge">ATO Membership</div>
+          <h3 style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;">Paid to ATO</h3>
+          <div class="price">$500<span>/month</span></div>
+          <p class="desc">Billed monthly, 12-month commitment.<br>Or prepay $5,000/year and save $1,000.</p>
+          <ul>
+            <li>Up to 3 placements per year</li>
+            <li>1 free replacement if a hire doesn't work out</li>
+            <li>AI training & tooling setup</li>
+            <li>Continuing education (group sessions, new tools)</li>
+            <li>Coaching & performance support</li>
+            <li>Structured onboarding check-ins</li>
+            <li>Dedicated support from ATO leadership</li>
+            <li>Assistant access to ATO community</li>
+          </ul>
+          <a href="#" class="btn-primary btn-full">Get started</a>
+          <p style="text-align: center; margin-top: 0.75rem; font-size: 0.82rem; color: var(--text-muted);">First month = paid trial, no annual commitment.<br>Annual commitment starts month two.</p>
+        </div>
+
+        <!-- Talent Pay -->
+        <div class="pricing-card">
+          <h3 style="color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;">Paid directly to your assistant</h3>
+          <div class="price">$1,200–2,000<span>/month</span></div>
+          <p class="desc">Rate based on scope and market demand at time of search.</p>
+
+          <table class="tier-table">
+            <thead>
+              <tr><th></th><th>Standard</th><th>Premium</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>What they do</td><td>Core EA work</td><td>Specialized or multi-domain work</td></tr>
+              <tr><td>Pay range</td><td>$1,200–1,500/mo</td><td>$1,600–2,000/mo</td></tr>
+              <tr><td>Examples</td><td>Inbox, calendar, travel, research, coordination, event support, light bookkeeping, ad hoc research</td><td>Owns 2+ domains end-to-end: e.g. recruitment + PM, marketing ops + project oversight, finance + ops</td></tr>
+            </tbody>
+          </table>
+
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 1rem;">You pay your assistant directly. No middleman, no hidden fees.</p>
+        </div>
+
+      </div>
+
+      <!-- Total Investment Highlight (UX improvement) -->
+      <div class="total-box">
+        <div class="total-label">Your total monthly investment</div>
+        <div class="total-amount">$1,700 – $2,300/mo</div>
+        <div class="total-note">A model where your assistant can earn more and you can see where every dollar goes.</div>
+      </div>
+
+      <!-- Value Props Row -->
+      <div class="value-row">
+        <div class="value-row-item">
+          <strong>Don't pay until first day</strong>
+          <span>No upfront fees</span>
+        </div>
+        <div class="value-row-item">
+          <strong>No annual lock-in on month 1</strong>
+          <span>Paid trial first</span>
+        </div>
+        <div class="value-row-item">
+          <strong>People over process</strong>
+          <span>Small team, direct access</span>
+        </div>
+        <div class="value-row-item">
+          <strong>Fully transparent</strong>
+          <span>See where every dollar goes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What's Included (standalone section — UX improvement: deduplicated from card) -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="text-center">
+        <p class="section-label">What's included</p>
+        <h2>Everything beyond the person</h2>
+        <p style="max-width: 560px; margin: 0 auto 2rem;"></p>
+      </div>
+      <div class="included-grid">
+        <div class="included-card">
+          <h3>🔍 Recruiting & Placement</h3>
+          <p>Full sourcing, vetting, and candidate shortlisting, with up to 3 hires per year. Resumes, video intros, and ATO's notes on each candidate. Plus 1 free replacement if a hire doesn't work out.</p>
+        </div>
+        <div class="included-card">
+          <h3>🤖 AI Training & Tooling</h3>
+          <p>5-session AI foundations program before Day 1. After placement: ongoing upskilling, new tools, Claude Cowork setup, and workflow-specific skills installation.</p>
+        </div>
+        <div class="included-card">
+          <h3>📚 Continuing Education</h3>
+          <p>Regular group sessions driven by real client needs. Access to ATO's knowledge base. New tools and workflows as they emerge.</p>
+        </div>
+        <div class="included-card">
+          <h3>🤝 Coaching & Performance</h3>
+          <p>Structured check ins and continuous coaching during placement.</p>
+        </div>
+      </div>
+      <p style="text-align: center; font-size: 0.88rem; color: var(--text-muted); margin-top: 1.5rem;">Need more support? Reach out to us directly.</p>
+    </div>
+  </section>
+
+  <!-- FAQ (Pricing-specific — UX improvement: moved full FAQ here) -->
+  <section class="section section-alt">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 2rem;">Frequently asked questions</h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How is this different from hiring directly on Upwork?</button>
+          <div class="faq-a">You'd pay a similar rate to talent, plus $500/mo for vetting, AI training, and support infrastructure. We remove the hiring risk: every candidate goes through a multi-stage process before they reach you. Plus, your assistant gets ongoing coaching and AI training that not all freelance hires would have.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How is this different from other EA agencies?</button>
+          <div class="faq-a">Most agencies charge $2,500–3,000/mo all-in and pay assistants $700–800. With ATO, your total cost is similar ($1,700–2,300/mo) but your assistant gets paid significantly more and also set up to work directly with you.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What's included in the $500/mo membership?</button>
+          <div class="faq-a">Recruiting and placement (up to 3 hires per year + 1 free replacement), AI training and tooling for your assistant, continuing education, coaching and performance support, structured onboarding check-ins, and access to ATO's talent community. It's everything beyond the person.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How does paying my assistant directly work?</button>
+          <div class="faq-a">You pay your assistant directly using your own systems at a rate based on their role and experience tier. Your assistant's rate is agreed upon before placement, so there are no surprises. We also offer a Managed Payments add-on ($150/mo) if you'd prefer ATO to handle payroll on your behalf. Interested? Feel free to reach out.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What does AI training actually look like?</button>
+          <div class="faq-a">Before placement, every assistant completes our 5-session AI foundations program: covering the AI landscape, prompting skills, tool fluency, and applying AI to real work tasks. After placement, they continue with ongoing coaching during check-ins, group learning sessions, and new tools and workflows as they emerge.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What if my assistant isn't working out?</button>
+          <div class="faq-a">We address it together. If it's a performance issue, we step in with coaching first. If a replacement makes more sense, your membership includes one free replacement per year. If you need to exit entirely, we ask for 30 days notice.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What happens if I don't renew after the first year?</button>
+          <div class="faq-a">You keep your assistant. They're your direct hire, not ours and it's as much as a win for us if you guys continue working together through the first year and more.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How do you vet candidates?</button>
+          <div class="faq-a">Every candidate goes through an initial interview, a tiered assessment task, and a final interview. By the time we propose someone, we're already confident. You review resumes, watch video intros, and run your own screening calls. You make the final call.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What about security and privacy?</button>
+          <div class="faq-a">All assistants sign an NDA before Day 1. We recommend starting with delegated or role-based access and expanding as trust develops. For teams that need more, we offer a Security Package add-on ($100/mo) that includes device management, VPN, virtual phone number, encryption, and remote wipe.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to get started?</h2>
+      <p>Your first month is a paid trial with no annual commitment. If it's the right fit, the membership kicks in from month two.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Get started</a>
+        <a href="#" class="btn-outline" onclick="showPage('contact'); return false;">Book an intro call</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- ==================== CONTACT PAGE ============================== -->
+<!-- ================================================================ -->
+<div id="contact" class="page-section">
+
+  <section class="hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <p class="section-label">Get in touch</p>
+      <h1>Ready to learn more?</h1>
+      <p class="subtitle">Fill out the form below or book a call directly. We'll get back to you within 24 hours.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container" style="max-width: 640px;">
+
+      <!-- Contact Form -->
+      <form class="contact-form" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First name</label>
+            <input type="text" placeholder="Jane">
+          </div>
+          <div class="form-group">
+            <label>Last name</label>
+            <input type="text" placeholder="Doe">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" placeholder="jane@company.com">
+        </div>
+        <div class="form-group">
+          <label>Company name</label>
+          <input type="text" placeholder="Acme Inc.">
+        </div>
+        <div class="form-group">
+          <label>What role are you looking for?</label>
+          <select>
+            <option value="">Select a role...</option>
+            <option>Executive Assistant</option>
+            <option>Operations Assistant</option>
+            <option>Marketing Assistant</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Anything else we should know?</label>
+          <textarea placeholder="Tell us about your needs, timeline, or any questions you have..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary btn-full">Send message</button>
+      </form>
+
+      <!-- Prefer to book directly -->
+      <div style="margin-top: 2.5rem; padding: 1.5rem; background: var(--primary-lighter); border-radius: 10px; text-align: center;">
+        <h3 style="font-size: 1rem; margin-bottom: 0.35rem;">Prefer to book directly?</h3>
+        <p style="font-size: 0.88rem; margin-bottom: 1rem;">Skip the form and jump straight to a call.</p>
+        <a href="#" class="btn-outline" style="font-size: 0.88rem; padding: 10px 22px;">Book an intro call</a>
+      </div>
+
+      <!-- What to Expect -->
+      <div style="margin-top: 3rem;">
+        <h3 style="margin-bottom: 0.5rem; text-align: center;">What to expect</h3>
+        <p style="font-size: 0.9rem; margin-bottom: 1rem; text-align: center;">Here's what happens after you reach out:</p>
+        <ul class="expect-list">
+          <li>
+            <span class="expect-num">1</span>
+            <div class="expect-text">
+              <strong>We respond within 24 hours</strong>
+              <span>Usually much faster. We'll confirm your needs and schedule an intro call.</span>
+            </div>
+          </li>
+          <li>
+            <span class="expect-num">2</span>
+            <div class="expect-text">
+              <strong>Quick intro call (15–20 min)</strong>
+              <span>We learn about your business, workflows, and what kind of assistant would be the best fit.</span>
+            </div>
+          </li>
+          <li>
+            <span class="expect-num">3</span>
+            <div class="expect-text">
+              <strong>Meet 2–4 vetted candidates</strong>
+              <span>Resumes, video intros, and ATO's notes within 1–2 weeks of our call.</span>
+            </div>
+          </li>
+          <li>
+            <span class="expect-num">4</span>
+            <div class="expect-text">
+              <strong>Start your paid trial</strong>
+              <span>Your assistant begins AI-trained and onboarded. Annual commitment starts at Month 2.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- ==================== BLOG PAGE ================================= -->
+<!-- ================================================================ -->
+<div id="blog" class="page-section">
+
+  <section class="hero" style="padding-bottom: 2rem;">
+    <div class="container">
+      <p class="section-label">Blog</p>
+      <h1>Insights and updates</h1>
+      <p class="subtitle">Thoughts on remote hiring, AI training, and building great assistant partnerships.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="blog-grid">
+        <div class="blog-card">
+          <div class="bc-img">[Featured Image]</div>
+          <div class="bc-body">
+            <div class="bc-tag">Announcement</div>
+            <h3>Why we're changing how ATO works</h3>
+            <p>We're shifting from a bundled service to a membership model — here's why it's better for you and your assistant.</p>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="bc-img">[Featured Image]</div>
+          <div class="bc-body">
+            <div class="bc-tag">AI Training</div>
+            <h3>What AI training for assistants actually looks like</h3>
+            <p>A behind-the-scenes look at our 5-session AI foundations program and why it matters.</p>
+          </div>
+        </div>
+        <div class="blog-card">
+          <div class="bc-img">[Featured Image]</div>
+          <div class="bc-body">
+            <div class="bc-tag">Hiring</div>
+            <h3>Direct hire vs. managed service: which is right for you?</h3>
+            <p>Breaking down the pros and cons of different remote hiring models.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: var(--bg-off); border-radius: 12px;">
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0;">Blog posts shown above are suggestions for launch content. Existing blog posts at <strong>ateamoverseas.com/blog</strong> carry over as-is. No changes needed to existing posts.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#" onclick="showPage('pricing'); return false;">Pricing</a>
+      <a href="#" onclick="showPage('contact'); return false;">Book a call</a>
+      <a href="#" onclick="showPage('contact'); return false;">Get started</a>
+      <a href="#" onclick="showPage('services'); return false;">Services</a>
+      <a href="#" onclick="showPage('whyus'); return false;">Why Us</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#" onclick="showPage('contact'); return false;">Contact</a>
+      <a href="#">Book a call</a>
+      <a href="#">Apply to work</a>
+    </div>
+    <div class="footer-col">
+      <h4>Industries</h4>
+      <a href="#">Healthcare</a>
+      <a href="#">Legal</a>
+      <a href="#">Startups</a>
+      <a href="#">SMB</a>
+      <a href="#">Real Estate</a>
+      <a href="#">Ecommerce</a>
+    </div>
+    <div class="footer-col">
+      <h4>Roles</h4>
+      <a href="#">Executive Assistant</a>
+      <a href="#">Operations Assistant</a>
+      <a href="#">Marketing Assistant</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="#" onclick="showPage('blog'); return false;">Blog</a>
+      <a href="#">EA Playbooks</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 A Team Overseas. All rights reserved.
+  </div>
+</footer>
+
+<script>
+function showPage(id) {
+  // Hide all page sections
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  // Show target
+  document.getElementById(id).classList.add('active');
+
+  // Update page tabs
+  document.querySelectorAll('.page-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.page === id);
+  });
+
+  // Update nav links
+  document.querySelectorAll('.nav-links a:not(.nav-cta)').forEach(a => a.classList.remove('active'));
+  const navLink = document.getElementById('nav-' + id);
+  if (navLink) navLink.classList.add('active');
+
+  window.scrollTo(0, 0);
+}
+
+// Tab click handlers
+document.querySelectorAll('.page-tab').forEach(tab => {
+  tab.addEventListener('click', () => showPage(tab.dataset.page));
+});
+
+function toggleFaq(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
